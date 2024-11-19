@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Login</h1>
+    <div class="p-2 row">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <div>
+                <p>Please enter your login credentials to access the CSC2031 Blog.</p>
+            </div>
+
+            {% if form %}
+                <form method="POST" action="{{ url_for('accounts.login') }}">
+                    <div class="p-2 bg-light border border-primary">
+                        <div style="text-align: left">
+                            {{ form.hidden_tag() }} <!-- CSRF Token -->
+
+                            <!-- Flash messages -->
+                            <div>
+                                {% with messages = get_flashed_messages(with_categories=true) %}
+                                {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} mt-3 alert-dismissible" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" onclick=delete_flash(this)>
+                                        <span>&times;</span>
+                                    </button>
+                                </div>
+                                {% endfor %}
+                                {% endwith %}
+                            </div>
+
+                            <!-- Email Field -->
+                            <div class="form-group">
+                                {{ form.email.label }}<span style="color: red">*</span>
+                                {{ form.email(class="form-control") }}
+                                {% for error in form.email.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <!-- Password Field -->
+                            <div class="form-group">
+                                {{ form.password.label }}<span style="color: red">*</span>
+                                {{ form.password(class="form-control") }}
+                                {% for error in form.password.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <!-- reCAPTCHA Field -->
+                            <div class="form-group">
+                                {{ form.recaptcha() }}  <!-- This renders the reCAPTCHA widget -->
+                            </div>
+
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div>
+                            {{ form.submit(class="btn btn-primary") }}
+                        </div>
+
+                    </div>
+                </form>
+            {% else %}
+                <!-- If the account is locked, show this message instead of the form -->
+                <p>Your account is locked due to too many failed login attempts. <a href="{{ url_for('accounts.reset_account') }}">Click here</a> to unlock your account.</p>
+            {% endif %}
+        </div>
+        <div class="col-3"></div>
+    </div>
+</div>
+
+{% endblock %}

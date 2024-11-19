@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Rate Limit Exceeded</h1>
+    <div class="alert alert-danger">
+        <p>You have exceeded the maximum allowed number of login attempts. Please try again later.</p>
+        <p>If you believe this is a mistake, please contact support.</p>
+    </div>
+</div>
+{% endblock %}
